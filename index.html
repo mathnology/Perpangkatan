@@ -22,7 +22,7 @@
         <!-- Header -->
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold text-indigo-800 mb-2">🧮 Belajar Perpangkatan</h1>
-            <p class="text-gray-600">Pelajari hasil perpangkatan 2-9 pangkat 1-5</p>
+            <p class="text-gray-600">Pelajari hasil perpangkatan 5 bilangan prima pertama (2, 3, 5, 7, 11) pangkat 1-5</p>
         </div>
 
         <!-- Mode Selection -->
@@ -80,7 +80,8 @@
                     <ul class="text-yellow-700 space-y-2">
                         <li>• Mulai dengan angka yang mudah seperti 2, 3, dan 5</li>
                         <li>• Perhatikan pola: 2⁴ = 16, 2⁵ = 32 (selalu dikali 2)</li>
-                        <li>• Gunakan trik: 9² = 81, 9³ = 729 (ingat 81 × 9)</li>
+                        <li>• Ingat: 5² = 25, 5³ = 125 (mudah diingat)</li>
+                        <li>• Bilangan prima: 2, 3, 5, 7, 11 adalah yang paling dasar</li>
                         <li>• Latih secara rutin dengan mode kuis</li>
                     </ul>
                 </div>
@@ -101,7 +102,7 @@
                     <!-- Base Numbers Selection -->
                     <div class="mb-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-3">Pilih Angka Dasar:</h3>
-                        <div class="grid grid-cols-4 gap-3">
+                        <div class="grid grid-cols-3 gap-3">
                             <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                                 <input type="checkbox" id="base-all" onchange="toggleAllBases()" class="w-4 h-4 text-indigo-600">
                                 <span class="font-semibold text-indigo-600">Semua</span>
@@ -115,28 +116,16 @@
                                 <span>3</span>
                             </label>
                             <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="4" class="base-checkbox w-4 h-4 text-indigo-600" checked>
-                                <span>4</span>
-                            </label>
-                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                                 <input type="checkbox" value="5" class="base-checkbox w-4 h-4 text-indigo-600" checked>
                                 <span>5</span>
-                            </label>
-                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="6" class="base-checkbox w-4 h-4 text-indigo-600" checked>
-                                <span>6</span>
                             </label>
                             <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                                 <input type="checkbox" value="7" class="base-checkbox w-4 h-4 text-indigo-600" checked>
                                 <span>7</span>
                             </label>
                             <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="8" class="base-checkbox w-4 h-4 text-indigo-600" checked>
-                                <span>8</span>
-                            </label>
-                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
-                                <input type="checkbox" value="9" class="base-checkbox w-4 h-4 text-indigo-600" checked>
-                                <span>9</span>
+                                <input type="checkbox" value="11" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>11</span>
                             </label>
                         </div>
                     </div>
@@ -265,9 +254,10 @@
     </div>
 
     <script>
-        // Data perpangkatan
+        // Data perpangkatan untuk 5 bilangan prima pertama
+        const primes = [2, 3, 5, 7, 11];
         const powerData = {};
-        for (let base = 2; base <= 9; base++) {
+        for (let base of primes) {
             powerData[base] = {};
             for (let power = 1; power <= 5; power++) {
                 powerData[base][power] = Math.pow(base, power);
@@ -280,7 +270,7 @@
         let wrongAnswers = 0;
         let currentStreak = 0;
         let maxStreak = 0;
-        let selectedBases = [2, 3, 4, 5, 6, 7, 8, 9];
+        let selectedBases = [2, 3, 5, 7, 11];
         let selectedPowers = [1, 2, 3, 4, 5];
 
         // Show different modes
@@ -401,7 +391,7 @@
             const tableBody = document.getElementById('studyTable');
             tableBody.innerHTML = '';
 
-            for (let base = 2; base <= 9; base++) {
+            for (let base of primes) {
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-gray-50';
                 
@@ -539,5 +529,5 @@
         // Initialize
         showMode('selection');
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972a2204613bce8a',t:'MTc1NTc3OTMzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972a2ad2537fce8a',t:'MTc1NTc3OTY5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
