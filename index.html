@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Perpangkatan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .pulse-animation { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-indigo-800 mb-2">🧮 Belajar Perpangkatan</h1>
+            <p class="text-gray-600">Pelajari hasil perpangkatan 2-9 pangkat 1-5</p>
+        </div>
+
+        <!-- Mode Selection -->
+        <div id="modeSelection" class="max-w-2xl mx-auto mb-8">
+            <div class="grid md:grid-cols-2 gap-6">
+                <button onclick="showMode('study')" class="card-hover bg-white rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-blue-300">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">📚</div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Mode Belajar</h3>
+                        <p class="text-gray-600">Lihat tabel perpangkatan lengkap</p>
+                    </div>
+                </button>
+                <button onclick="showMode('quizSettings')" class="card-hover bg-white rounded-xl p-6 shadow-lg border-2 border-transparent hover:border-green-300">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🎯</div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Mode Kuis</h3>
+                        <p class="text-gray-600">Uji kemampuan hafalan Anda</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Study Mode -->
+        <div id="studyMode" class="hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold text-gray-800">📊 Tabel Perpangkatan</h2>
+                        <button onclick="showMode('selection')" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            ← Kembali
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse">
+                            <thead>
+                                <tr class="bg-indigo-50">
+                                    <th class="border border-gray-300 px-4 py-3 text-indigo-800 font-semibold">Angka</th>
+                                    <th class="border border-gray-300 px-4 py-3 text-indigo-800 font-semibold">Pangkat 1</th>
+                                    <th class="border border-gray-300 px-4 py-3 text-indigo-800 font-semibold">Pangkat 2</th>
+                                    <th class="border border-gray-300 px-4 py-3 text-indigo-800 font-semibold">Pangkat 3</th>
+                                    <th class="border border-gray-300 px-4 py-3 text-indigo-800 font-semibold">Pangkat 4</th>
+                                    <th class="border border-gray-300 px-4 py-3 text-indigo-800 font-semibold">Pangkat 5</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studyTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-xl">
+                    <h3 class="text-lg font-semibold text-yellow-800 mb-3">💡 Tips Menghafal:</h3>
+                    <ul class="text-yellow-700 space-y-2">
+                        <li>• Mulai dengan angka yang mudah seperti 2, 3, dan 5</li>
+                        <li>• Perhatikan pola: 2⁴ = 16, 2⁵ = 32 (selalu dikali 2)</li>
+                        <li>• Gunakan trik: 9² = 81, 9³ = 729 (ingat 81 × 9)</li>
+                        <li>• Latih secara rutin dengan mode kuis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Settings -->
+        <div id="quizSettings" class="hidden">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800">⚙️ Pengaturan Kuis</h2>
+                        <button onclick="showMode('selection')" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            ← Kembali
+                        </button>
+                    </div>
+
+                    <!-- Base Numbers Selection -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Pilih Angka Dasar:</h3>
+                        <div class="grid grid-cols-4 gap-3">
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" id="base-all" onchange="toggleAllBases()" class="w-4 h-4 text-indigo-600">
+                                <span class="font-semibold text-indigo-600">Semua</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="2" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>2</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="3" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>3</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="4" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>4</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="5" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>5</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="6" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>6</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="7" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>7</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="8" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>8</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="9" class="base-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>9</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Power Selection -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Pilih Pangkat:</h3>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" id="power-all" onchange="toggleAllPowers()" class="w-4 h-4 text-indigo-600">
+                                <span class="font-semibold text-indigo-600">Semua</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="1" class="power-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>Pangkat 1</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="2" class="power-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>Pangkat 2</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="3" class="power-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>Pangkat 3</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="4" class="power-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>Pangkat 4</span>
+                            </label>
+                            <label class="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                <input type="checkbox" value="5" class="power-checkbox w-4 h-4 text-indigo-600" checked>
+                                <span>Pangkat 5</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Quick Presets -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Preset Cepat:</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setPreset('easy')" class="p-3 bg-green-100 hover:bg-green-200 text-green-800 rounded-lg transition-colors">
+                                🟢 Mudah (Pangkat 1-2)
+                            </button>
+                            <button onclick="setPreset('medium')" class="p-3 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 rounded-lg transition-colors">
+                                🟡 Sedang (Pangkat 1-3)
+                            </button>
+                            <button onclick="setPreset('hard')" class="p-3 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg transition-colors">
+                                🔴 Sulit (Pangkat 1-5)
+                            </button>
+                            <button onclick="setPreset('squares')" class="p-3 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg transition-colors">
+                                🔷 Kuadrat Saja (Pangkat 2)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Start Quiz Button -->
+                    <button onclick="startQuizWithSettings()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+                        Mulai Kuis 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Mode -->
+        <div id="quizMode" class="hidden">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-gray-800">🎯 Kuis Perpangkatan</h2>
+                        <div class="flex gap-2">
+                            <button onclick="showMode('quizSettings')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                ⚙️ Pengaturan
+                            </button>
+                            <button onclick="showMode('selection')" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                ← Kembali
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Score Display -->
+                    <div class="flex justify-between items-center mb-6 p-4 bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600" id="correctCount">0</div>
+                            <div class="text-sm text-gray-600">Benar</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-red-600" id="wrongCount">0</div>
+                            <div class="text-sm text-gray-600">Salah</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600" id="streakCount">0</div>
+                            <div class="text-sm text-gray-600">Beruntun</div>
+                        </div>
+                    </div>
+
+                    <!-- Question -->
+                    <div class="text-center mb-8">
+                        <div class="text-6xl font-bold text-indigo-800 mb-4" id="question">2³ = ?</div>
+                        <p class="text-gray-600">Berapa hasil dari perpangkatan di atas?</p>
+                    </div>
+
+                    <!-- Answer Input -->
+                    <div class="mb-6">
+                        <input type="number" id="answerInput" class="w-full text-center text-2xl font-semibold p-4 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none" placeholder="Masukkan jawaban...">
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4 mb-6">
+                        <button onclick="checkAnswer()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+                            Periksa Jawaban
+                        </button>
+                        <button onclick="skipQuestion()" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+                            Lewati
+                        </button>
+                    </div>
+
+                    <!-- Feedback -->
+                    <div id="feedback" class="hidden text-center p-4 rounded-lg mb-4"></div>
+
+                    <!-- Next Button -->
+                    <button id="nextButton" onclick="nextQuestion()" class="hidden w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+                        Soal Berikutnya
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data perpangkatan
+        const powerData = {};
+        for (let base = 2; base <= 9; base++) {
+            powerData[base] = {};
+            for (let power = 1; power <= 5; power++) {
+                powerData[base][power] = Math.pow(base, power);
+            }
+        }
+
+        // Quiz variables
+        let currentQuestion = {};
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let currentStreak = 0;
+        let maxStreak = 0;
+        let selectedBases = [2, 3, 4, 5, 6, 7, 8, 9];
+        let selectedPowers = [1, 2, 3, 4, 5];
+
+        // Show different modes
+        function showMode(mode) {
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('studyMode').classList.add('hidden');
+            document.getElementById('quizMode').classList.add('hidden');
+            document.getElementById('quizSettings').classList.add('hidden');
+
+            if (mode === 'selection') {
+                document.getElementById('modeSelection').classList.remove('hidden');
+            } else if (mode === 'study') {
+                document.getElementById('studyMode').classList.remove('hidden');
+                generateStudyTable();
+            } else if (mode === 'quiz') {
+                document.getElementById('quizMode').classList.remove('hidden');
+                resetQuiz();
+                generateQuestion();
+            } else if (mode === 'quizSettings') {
+                document.getElementById('quizSettings').classList.remove('hidden');
+                updateCheckboxStates();
+            }
+        }
+
+        // Toggle all bases
+        function toggleAllBases() {
+            const allCheckbox = document.getElementById('base-all');
+            const baseCheckboxes = document.querySelectorAll('.base-checkbox');
+            
+            baseCheckboxes.forEach(checkbox => {
+                checkbox.checked = allCheckbox.checked;
+            });
+        }
+
+        // Toggle all powers
+        function toggleAllPowers() {
+            const allCheckbox = document.getElementById('power-all');
+            const powerCheckboxes = document.querySelectorAll('.power-checkbox');
+            
+            powerCheckboxes.forEach(checkbox => {
+                checkbox.checked = allCheckbox.checked;
+            });
+        }
+
+        // Set preset configurations
+        function setPreset(preset) {
+            const baseCheckboxes = document.querySelectorAll('.base-checkbox');
+            const powerCheckboxes = document.querySelectorAll('.power-checkbox');
+            
+            // Reset all checkboxes
+            baseCheckboxes.forEach(cb => cb.checked = false);
+            powerCheckboxes.forEach(cb => cb.checked = false);
+            
+            // Check all bases for all presets
+            baseCheckboxes.forEach(cb => cb.checked = true);
+            
+            // Set powers based on preset
+            switch(preset) {
+                case 'easy':
+                    document.querySelector('.power-checkbox[value="1"]').checked = true;
+                    document.querySelector('.power-checkbox[value="2"]').checked = true;
+                    break;
+                case 'medium':
+                    document.querySelector('.power-checkbox[value="1"]').checked = true;
+                    document.querySelector('.power-checkbox[value="2"]').checked = true;
+                    document.querySelector('.power-checkbox[value="3"]').checked = true;
+                    break;
+                case 'hard':
+                    powerCheckboxes.forEach(cb => cb.checked = true);
+                    break;
+                case 'squares':
+                    document.querySelector('.power-checkbox[value="2"]').checked = true;
+                    break;
+            }
+            
+            updateCheckboxStates();
+        }
+
+        // Update checkbox states
+        function updateCheckboxStates() {
+            const baseCheckboxes = document.querySelectorAll('.base-checkbox');
+            const powerCheckboxes = document.querySelectorAll('.power-checkbox');
+            const baseAllCheckbox = document.getElementById('base-all');
+            const powerAllCheckbox = document.getElementById('power-all');
+            
+            // Check if all bases are selected
+            const allBasesChecked = Array.from(baseCheckboxes).every(cb => cb.checked);
+            baseAllCheckbox.checked = allBasesChecked;
+            
+            // Check if all powers are selected
+            const allPowersChecked = Array.from(powerCheckboxes).every(cb => cb.checked);
+            powerAllCheckbox.checked = allPowersChecked;
+        }
+
+        // Start quiz with custom settings
+        function startQuizWithSettings() {
+            const checkedBases = Array.from(document.querySelectorAll('.base-checkbox:checked')).map(cb => parseInt(cb.value));
+            const checkedPowers = Array.from(document.querySelectorAll('.power-checkbox:checked')).map(cb => parseInt(cb.value));
+            
+            if (checkedBases.length === 0) {
+                alert('Pilih minimal satu angka dasar!');
+                return;
+            }
+            
+            if (checkedPowers.length === 0) {
+                alert('Pilih minimal satu pangkat!');
+                return;
+            }
+            
+            selectedBases = checkedBases;
+            selectedPowers = checkedPowers;
+            
+            showMode('quiz');
+        }
+
+        // Generate study table
+        function generateStudyTable() {
+            const tableBody = document.getElementById('studyTable');
+            tableBody.innerHTML = '';
+
+            for (let base = 2; base <= 9; base++) {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                
+                row.innerHTML = `
+                    <td class="border border-gray-300 px-4 py-3 font-semibold text-center bg-indigo-50">${base}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">${powerData[base][1]}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">${powerData[base][2]}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">${powerData[base][3]}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">${powerData[base][4]}</td>
+                    <td class="border border-gray-300 px-4 py-3 text-center">${powerData[base][5]}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            currentStreak = 0;
+            updateScoreDisplay();
+        }
+
+        // Generate random question
+        function generateQuestion() {
+            if (selectedBases.length === 0 || selectedPowers.length === 0) {
+                alert('Tidak ada soal yang bisa dibuat dengan pengaturan ini!');
+                return;
+            }
+            
+            const base = selectedBases[Math.floor(Math.random() * selectedBases.length)];
+            const power = selectedPowers[Math.floor(Math.random() * selectedPowers.length)];
+            
+            currentQuestion = {
+                base: base,
+                power: power,
+                answer: powerData[base][power]
+            };
+
+            document.getElementById('question').textContent = `${base}${getSuperscript(power)} = ?`;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('answerInput').focus();
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('nextButton').classList.add('hidden');
+        }
+
+        // Get superscript for power
+        function getSuperscript(power) {
+            const superscripts = ['', '¹', '²', '³', '⁴', '⁵'];
+            return superscripts[power];
+        }
+
+        // Check answer
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answerInput').value);
+            const feedback = document.getElementById('feedback');
+            const nextButton = document.getElementById('nextButton');
+
+            if (isNaN(userAnswer)) {
+                feedback.className = 'text-center p-4 rounded-lg mb-4 bg-yellow-100 border border-yellow-400 text-yellow-800';
+                feedback.textContent = 'Silakan masukkan angka yang valid!';
+                feedback.classList.remove('hidden');
+                return;
+            }
+
+            if (userAnswer === currentQuestion.answer) {
+                correctAnswers++;
+                currentStreak++;
+                maxStreak = Math.max(maxStreak, currentStreak);
+                
+                feedback.className = 'text-center p-4 rounded-lg mb-4 bg-green-100 border border-green-400 text-green-800';
+                feedback.innerHTML = `
+                    <div class="text-2xl mb-2">🎉 Benar!</div>
+                    <div>${currentQuestion.base}${getSuperscript(currentQuestion.power)} = ${currentQuestion.answer}</div>
+                `;
+            } else {
+                wrongAnswers++;
+                currentStreak = 0;
+                
+                feedback.className = 'text-center p-4 rounded-lg mb-4 bg-red-100 border border-red-400 text-red-800';
+                feedback.innerHTML = `
+                    <div class="text-2xl mb-2">❌ Salah!</div>
+                    <div>Jawaban yang benar: ${currentQuestion.base}${getSuperscript(currentQuestion.power)} = ${currentQuestion.answer}</div>
+                    <div class="text-sm mt-2">Jawaban Anda: ${userAnswer}</div>
+                `;
+            }
+
+            feedback.classList.remove('hidden');
+            nextButton.classList.remove('hidden');
+            updateScoreDisplay();
+        }
+
+        // Skip question
+        function skipQuestion() {
+            const feedback = document.getElementById('feedback');
+            const nextButton = document.getElementById('nextButton');
+            
+            currentStreak = 0;
+            
+            feedback.className = 'text-center p-4 rounded-lg mb-4 bg-blue-100 border border-blue-400 text-blue-800';
+            feedback.innerHTML = `
+                <div class="text-2xl mb-2">⏭️ Dilewati</div>
+                <div>Jawaban: ${currentQuestion.base}${getSuperscript(currentQuestion.power)} = ${currentQuestion.answer}</div>
+            `;
+            
+            feedback.classList.remove('hidden');
+            nextButton.classList.remove('hidden');
+            updateScoreDisplay();
+        }
+
+        // Next question
+        function nextQuestion() {
+            generateQuestion();
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            document.getElementById('correctCount').textContent = correctAnswers;
+            document.getElementById('wrongCount').textContent = wrongAnswers;
+            document.getElementById('streakCount').textContent = currentStreak;
+        }
+
+        // Enter key support
+        document.getElementById('answerInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (document.getElementById('nextButton').classList.contains('hidden')) {
+                    checkAnswer();
+                } else {
+                    nextQuestion();
+                }
+            }
+        });
+
+        // Initialize
+        showMode('selection');
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972a2204613bce8a',t:'MTc1NTc3OTMzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
